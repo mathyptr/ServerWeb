@@ -59,7 +59,7 @@ public class JavaHTTPServer implements Runnable{
 	}
 	public static void main(String[] args) {
 		
-			URL p=JavaHTTPServer.class.getResource("./resource");
+			URL p=JavaHTTPServer.class.getResource(".");
 			WEB_ROOT=new File(p.getPath());
 			Socket connect;
 			
@@ -67,6 +67,7 @@ public class JavaHTTPServer implements Runnable{
 			msgB.SetLanguage("it", "IT");
 			logger.info( msgB.GetResourceValue("srvStarted") + msgB.GetResourceValue("srvPORT") + " ...\n"); 
 			ServerSocket serverConnect =null;
+		
 			
 			try {
 					serverConnect = new ServerSocket(Integer.valueOf(msgB.GetResourceValue("srvPORT")).intValue());
@@ -85,7 +86,7 @@ public class JavaHTTPServer implements Runnable{
 			}		
 	}
 
-	@Override
+//	@Override
 	public void run() {
 		// we manage our particular client connection
 		BufferedReader in = null; PrintWriter out = null; BufferedOutputStream dataOut = null;
@@ -143,7 +144,7 @@ public class JavaHTTPServer implements Runnable{
 				
 				
 				File file = new File(WEB_ROOT, fileRequested);		
-				String content = getContentType(fileRequested);
+				contentType = getContentType(fileRequested);
 				
 				if(!file.exists() && fileRequested.indexOf(".")==-1)  {
 						
@@ -158,17 +159,42 @@ public class JavaHTTPServer implements Runnable{
 				}
 				else
 				{	
-				int fileLength = (int) file.length();
-				
-				if (method.equals("GET")) { // GET method so we return content
-					byte[] fileData = readFileData(file, fileLength);
+					if (method.equals("GET")) { // GET method so we return content
 					
+					if(fileRequested.indexOf(".xml")!=-1)
+					{
+						DesAndSer d= new DesAndSer();
+						try {
+							String fileJSON = fileRequested;	
+							fileJSON=fileJSON.replace(".xml",".json");					
+							d.jsonRead(fileJSON);	
+							
+							File fileXML = new File(WEB_ROOT, fileRequested);
+							d.xmlWrite(fileXML);	
+				
+							contentType= getContentType(fileRequested);
+		
+							int fileLength = (int) fileXML.length();
+							byte[] fileData = readFileData(fileXML, fileLength);	
+							printHeader(out,msgB.GetResourceValue("respOK"), msgB.GetResourceValue("serverInfo"),fileLength);											
+							dataOut.write(fileData, 0, fileLength);
+					
+						} catch (Throwable e) {
+							// TODO Auto-generated catch block
+							logger.error(msgB.GetResourceValue("ErrorReadJSON") + e.getMessage());
+						}
+					}	
+					else {						
+						int fileLength = (int) file.length();
+			
+						byte[] fileData = readFileData(file, fileLength);					
 					// send HTTP Headers
-					printHeader(out,msgB.GetResourceValue("respOK"), msgB.GetResourceValue("serverInfo"),fileLength);				
-					dataOut.write(fileData, 0, fileLength);
+						printHeader(out,msgB.GetResourceValue("respOK"), msgB.GetResourceValue("serverInfo"),fileLength);				
+						dataOut.write(fileData, 0, fileLength);
+					}
 					dataOut.flush();
 				}				
-				logger.debug(msgB.GetResourceValue("srvFileTypeReturned") + content +":" + fileRequested );
+				logger.debug(msgB.GetResourceValue("srvFileTypeReturned") + contentType +":" + fileRequested );
 				}
 			}
 			
@@ -215,6 +241,8 @@ public class JavaHTTPServer implements Runnable{
 	private String getContentType(String fileRequested) {
 		if (fileRequested.endsWith(".htm")  ||  fileRequested.endsWith(".html"))
 			return "text/html";
+		else if (fileRequested.endsWith(".xml")  ||  fileRequested.endsWith(".XML"))
+			return "text/xml";
 		else
 			return "text/plain";
 	}
