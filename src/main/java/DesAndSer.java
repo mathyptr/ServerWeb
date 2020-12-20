@@ -24,15 +24,15 @@ public class DesAndSer {
 	  }
 	
 	
-  public void xmlWrite(File fileXML) throws Throwable{
+	public void xmlWrite(File fileXML) throws Throwable{
     
 	  XMLEncoder encoder = new XMLEncoder(new FileOutputStream(fileXML));
 	  encoder.writeObject(listPuntiVendita);
       encoder.close();
  
-  }
+	}
   
-  public void xmlRead() throws Throwable{
+	public void xmlRead() throws Throwable{
 
 	  }
   
@@ -48,5 +48,19 @@ public class DesAndSer {
 		  listPuntiVendita = objectMapper.readValue(jsonPVArray, new TypeReference<List<PuntiVendita>>(){});
 		
 	 
-	  }	 
+	  }	
+	  
+	  public void xmlWritePerson(File fileXML,List<Person> listPerson) throws Throwable{
+		    
+		  XMLEncoder encoder = new XMLEncoder(new FileOutputStream(fileXML));
+		  encoder.writeObject(listPerson);
+	      encoder.close();
+	 
+	  }
+	  public void jsonWritePerson(File fileJSON,List<Person> listPerson) throws Throwable{
+		  	 ObjectMapper objectMapper = new ObjectMapper();
+			 objectMapper.writeValue(new FileOutputStream(fileJSON), listPerson);
+
+	 
+	  }
 }
