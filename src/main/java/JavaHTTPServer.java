@@ -169,7 +169,7 @@ public class JavaHTTPServer implements Runnable{
 						
 						String nomeFileXML=fileRequested.substring(fileRequested.indexOf("/db/")+4)+".xml";
 						File fileXML = new File(WEB_ROOT, nomeFileXML);
-						DBManager dbm= new DBManager();
+						DBManager dbm= new DBManager(conf.getmysqluser(),conf.getmysqlpassw(),conf.getmysqlhost(), conf.getmysqlport(),conf.getmysqldb());
 						java.util.Vector <Person> allp= dbm.readAll();								
 						d.xmlWritePerson(fileXML,allp);	
 						contentType= getContentType(fileRequested);
@@ -189,7 +189,7 @@ public class JavaHTTPServer implements Runnable{
 					try {
 						String nomeFileJSON=fileRequested.substring(fileRequested.indexOf("/db/")+4)+".json";						
 						File fileJSON = new File(WEB_ROOT, nomeFileJSON);
-						DBManager dbm= new DBManager();
+						DBManager dbm= new DBManager(conf.getmysqluser(),conf.getmysqlpassw(),conf.getmysqlhost(), conf.getmysqlport(),conf.getmysqldb());
 						java.util.Vector <Person> allp= dbm.readAll();								
 						d.jsonWritePerson(fileJSON,allp);	
 						contentType= getContentType(fileRequested);
@@ -250,7 +250,7 @@ public class JavaHTTPServer implements Runnable{
 								DesAndSer d= new DesAndSer();
 								try {
 									File fileJSON = new File(WEB_ROOT, fileRequested);
-									DBManager dbm= new DBManager();
+									DBManager dbm= new DBManager(conf.getmysqluser(),conf.getmysqlpassw(),conf.getmysqlhost(), conf.getmysqlport(),conf.getmysqldb());
 									java.util.Vector <Person> allp= dbm.readAll();								
 									d.jsonWritePerson(fileJSON,allp);	
 

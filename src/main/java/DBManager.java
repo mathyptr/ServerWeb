@@ -12,7 +12,23 @@ import java.sql.Statement;
  */
 public class DBManager {
 
-	String url = "jdbc:mysql://localhost:3306/TIPSIT";
+	private String url = "jdbc:mysql://localhost:3306/TIPSIT";
+	private String user;
+	private String passw;
+	private String host;
+	private String port;
+	private String db;
+
+	
+	DBManager(String user,String passw,String host, String port,String db ){
+		this.user=user;
+		this.passw=passw;
+		this.host=host;
+		this.port=port;
+		this.db=db;
+		url = "jdbc:mysql://"+host+":"+port+"/"+db;
+	
+	 }
     /**
      * Metodo per la connessione al database
      *
@@ -21,7 +37,7 @@ public class DBManager {
     private Connection connect() {  	
         Connection conn = null;
         try {
-            conn = DriverManager.getConnection(url,"root","");
+            conn = DriverManager.getConnection(url,user,passw);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

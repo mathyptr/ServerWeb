@@ -2,5 +2,10 @@
 "serverInfo":"Server: Java HTTP Server from Mathy : 1.0",
 "srvPORT":"3000",
 "webroot":"/var/www1",
-"redirectTO":"http://localhost:3000/newPath"
+"redirectTO":"http://localhost:3000/newPath",
+"mysqluser":"mathy",
+"mysqlpassw":"mathy",
+"mysqlhost":"localhost",
+"mysqlport":"3306",
+"mysqldb":"tipsit"
 }

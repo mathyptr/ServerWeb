@@ -4,6 +4,11 @@ public class ConfParam {
 		  private String srvPORT;
 		  private String webroot ;
 		  private String redirectTO ;
+		  private String mysqluser;
+		  private String mysqlpassw;
+		  private String mysqlhost;
+		  private String mysqlport;
+		  private String mysqldb;
 
 		  public ConfParam() {}
 
@@ -12,6 +17,7 @@ public class ConfParam {
 		    this.srvPORT=srvPORT;
 		    this.webroot = webroot;
 		    this.redirectTO = redirectTO;
+		    
 		  }
 
 		  public void setserverInfo(String serverInfo) {
@@ -44,5 +50,43 @@ public class ConfParam {
 		    return redirectTO;
 		  }
 
+		  public void setmysqluser(String mysqluser) {
+			    this.mysqluser = mysqluser;
+			  }
+
+			  public String getmysqluser() {
+			    return mysqluser;
+			  }
+			  public void setmysqlpassw(String mysqlpassw) {
+				    this.mysqlpassw = mysqlpassw;
+				  }
+
+				  public String getmysqlpassw() {
+				    return mysqlpassw;
+				  }
+				  public void setmysqlhost(String mysqlhost) {
+					    this.mysqlhost = mysqlhost;
+					  }
+
+					  public String getmysqlhost() {
+					    return mysqlhost;
+					  }
+					  public void setmysqlport(String mysqlport) {
+						    this.mysqlport = mysqlport;
+						  }
+
+						  public String getmysqlport() {
+						    return mysqlport;
+						  }
+						  public void setmysqldb(String mysqldb) {
+							    this.mysqldb = mysqldb;
+							  }
+
+							  public String getmysqldb() {
+							    return mysqldb;
+							  }
+		  
+		  
+		  
 		}
 
