@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.*;
 public class DesAndSer {
 
 	List<PuntiVendita> listPuntiVendita;
-	
+		
 	public void DesAndSer(){
 
 	  }
@@ -46,6 +46,15 @@ public class DesAndSer {
 		  String jsonPVArray = IOUtils.toString(input, StandardCharsets.UTF_8.name()); 
 		
 		  listPuntiVendita = objectMapper.readValue(jsonPVArray, new TypeReference<List<PuntiVendita>>(){});
+		
+	 
+	  }	
+	  
+	  public ConfParam jsonReadConf(String fileRequested) throws Throwable{
+		  ObjectMapper objectMapper = new ObjectMapper();
+		  InputStream input =new FileInputStream(fileRequested);
+		
+		  return objectMapper.readValue(input, ConfParam.class);
 		
 	 
 	  }	

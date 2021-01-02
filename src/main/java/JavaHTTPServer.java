@@ -26,6 +26,7 @@ public class JavaHTTPServer implements Runnable{
 
 	//	static final File WEB_ROOT = new File(".");
 	static File WEB_ROOT = new File(".");
+	static ConfParam conf;
 	static final String DEFAULT_FILE = "index.html";
 	static final String FILE_NOT_FOUND = "404.html";
 	static final String METHOD_NOT_SUPPORTED = "not_supported.html";
@@ -59,18 +60,38 @@ public class JavaHTTPServer implements Runnable{
 	}
 	public static void main(String[] args) {
 
-		URL p=JavaHTTPServer.class.getResource(".");
-		WEB_ROOT=new File(p.getPath());
-		Socket connect;
 
 		MessagesBundle msgB= new MessagesBundle();	
 		msgB.SetLanguage("it", "IT");
-		logger.info( msgB.GetResourceValue("srvStarted") + msgB.GetResourceValue("srvPORT") + " ...\n"); 
+	
+		File jarPath;
+		String propertiesPath;
+	
+//	        jarPath=new File( this.getClass().getSimpleName().class.getProtectionDomain().getCodeSource().getLocation().getPath());
+	    jarPath=new File(JavaHTTPServer.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+	    	
+		conf = new ConfParam();
+		DesAndSer d= new DesAndSer();
+		try {
+			conf=d.jsonReadConf(jarPath.getParentFile().getAbsolutePath()+"\\JavaHTTPServer.json");
+		} catch (Throwable e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+	//	URL p=JavaHTTPServer.class.getResource(".");
+	//	WEB_ROOT=new File(p.getPath());
+		WEB_ROOT=new File(conf.getwebroot());
+	
+		logger.info( msgB.GetResourceValue("srvStarted") + conf.getsrvPORT() + " ...\n"); 
+
+		
+		Socket connect;
 		ServerSocket serverConnect =null;
 
 
 		try {
-			serverConnect = new ServerSocket(Integer.valueOf(msgB.GetResourceValue("srvPORT")).intValue());
+			serverConnect = new ServerSocket(Integer.valueOf(conf.getsrvPORT()).intValue());
 		} 
 		catch (IOException e) {
 			logger.error(msgB.GetResourceValue("srvConnError") + e.getMessage());
@@ -129,7 +150,7 @@ public class JavaHTTPServer implements Runnable{
 				byte[] fileData = readFileData(file, fileLength);
 
 				// we send HTTP Headers with data to client
-				printHeader(out,msgB.GetResourceValue("NotImplemented"), msgB.GetResourceValue("serverInfo"),fileLength);
+				printHeader(out,msgB.GetResourceValue("NotImplemented"),fileLength);
 				// file
 				dataOut.write(fileData, 0, fileLength);
 				dataOut.flush();
@@ -154,7 +175,7 @@ public class JavaHTTPServer implements Runnable{
 						contentType= getContentType(fileRequested);
 						int fileLength = (int) fileXML.length();
 						byte[] fileData = readFileData(fileXML, fileLength);	
-						printHeader(out,msgB.GetResourceValue("respOK"), msgB.GetResourceValue("serverInfo"),fileLength);											
+						printHeader(out,msgB.GetResourceValue("respOK"), fileLength);											
 						dataOut.write(fileData, 0, fileLength);
 						dataOut.flush();
 					} catch (Throwable e) {
@@ -174,7 +195,7 @@ public class JavaHTTPServer implements Runnable{
 						contentType= getContentType(fileRequested);
 						int fileLength = (int) fileJSON.length();
 						byte[] fileData = readFileData(fileJSON, fileLength);	
-						printHeader(out,msgB.GetResourceValue("respOK"), msgB.GetResourceValue("serverInfo"),fileLength);											
+						printHeader(out,msgB.GetResourceValue("respOK"),fileLength);											
 						dataOut.write(fileData, 0, fileLength);
 						dataOut.flush();
 					} catch (Throwable e) {
@@ -192,10 +213,10 @@ public class JavaHTTPServer implements Runnable{
 
 						//						printHeader(out,msgB.GetResourceValue("respRedirect"), msgB.GetResourceValue("serverInfo"),0);	
 						out.println(msgB.GetResourceValue("respRedirect"));
-						out.println("Location: " + msgB.GetResourceValue("redirectTO")+fileRequested+"/");
+						out.println("Location: " + conf.getredirectTO()+fileRequested+"/");
 						//					out.println("HTTP/1.1 301 Moved Permanently");
 						//							out.println("Location: http://127.0.0.1:8080");
-						logger.debug("Location: " + msgB.GetResourceValue("redirectTO")+fileRequested+"/");
+						logger.debug("Location: " + conf.getredirectTO()+fileRequested+"/");
 						out.println(); // blank line between headers and content, very important !
 						out.flush();
 					}
@@ -216,7 +237,7 @@ public class JavaHTTPServer implements Runnable{
 
 									int fileLength = (int) fileXML.length();
 									byte[] fileData = readFileData(fileXML, fileLength);	
-									printHeader(out,msgB.GetResourceValue("respOK"), msgB.GetResourceValue("serverInfo"),fileLength);											
+									printHeader(out,msgB.GetResourceValue("respOK"), fileLength);											
 									dataOut.write(fileData, 0, fileLength);
 
 								} catch (Throwable e) {
@@ -237,7 +258,7 @@ public class JavaHTTPServer implements Runnable{
 
 									int fileLength = (int) fileJSON.length();
 									byte[] fileData = readFileData(fileJSON, fileLength);	
-									printHeader(out,msgB.GetResourceValue("respOK"), msgB.GetResourceValue("serverInfo"),fileLength);											
+									printHeader(out,msgB.GetResourceValue("respOK") ,fileLength);											
 									dataOut.write(fileData, 0, fileLength);
 
 								} catch (Throwable e) {
@@ -250,7 +271,7 @@ public class JavaHTTPServer implements Runnable{
 
 								byte[] fileData = readFileData(file, fileLength);					
 								// send HTTP Headers
-								printHeader(out,msgB.GetResourceValue("respOK"), msgB.GetResourceValue("serverInfo"),fileLength);				
+								printHeader(out,msgB.GetResourceValue("respOK"),fileLength);				
 								dataOut.write(fileData, 0, fileLength);
 							}
 							dataOut.flush();
@@ -314,16 +335,16 @@ public class JavaHTTPServer implements Runnable{
 		int fileLength = (int) file.length();
 		String content = "text/html";
 		byte[] fileData = readFileData(file, fileLength);
-		printHeader(out,msgB.GetResourceValue("fileNotFound"), msgB.GetResourceValue("serverInfo"),fileLength);
+		printHeader(out,msgB.GetResourceValue("fileNotFound"), fileLength);
 		dataOut.write(fileData, 0, fileLength);
 		dataOut.flush();
 		logger.debug(fileRequested+msgB.GetResourceValue("fileNotFound"));
 	}
 
-	private void printHeader(PrintWriter out,String statusCode, String serverInfo,int fileLengthOUT) throws IOException {
+	private void printHeader(PrintWriter out,String statusCode,int fileLengthOUT) throws IOException {
 
 		out.println(statusCode);
-		out.println(serverInfo);
+		out.println(conf.getserverInfo());
 		out.println("Date: " + new Date());
 		out.println("Content-type: " + contentType);
 		out.println("Content-length: " + fileLengthOUT);
