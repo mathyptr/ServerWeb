@@ -73,7 +73,7 @@ public class JavaHTTPServer implements Runnable{
 		conf = new ConfParam();
 		DesAndSer d= new DesAndSer();
 		try {
-			conf=d.jsonReadConf(jarPath.getParentFile().getAbsolutePath()+"\\JavaHTTPServer.json");
+			conf=d.jsonReadConf(jarPath.getParentFile().getAbsolutePath()+"/JavaHTTPServer.json");
 		} catch (Throwable e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
