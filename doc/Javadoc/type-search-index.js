@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"<Unnamed>","l":"ConfParam"},{"p":"<Unnamed>","l":"DBManager"},{"p":"<Unnamed>","l":"DesAndSer"},{"p":"<Unnamed>","l":"JavaHTTPServer"},{"p":"<Unnamed>","l":"MessagesBundle"},{"p":"<Unnamed>","l":"Person"},{"p":"<Unnamed>","l":"PuntiVendita"}]

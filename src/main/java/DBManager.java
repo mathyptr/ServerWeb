@@ -19,7 +19,16 @@ public class DBManager {
 	private String port;
 	private String db;
 
-	
+	/**
+	 * costruttore della classe DBManager
+	 *
+	 * @param user  String
+	 * @param passw String
+	 * @param host  String
+	 * @param port  String
+	 * @param db    String
+	 * 
+	 */
 	DBManager(String user,String passw,String host, String port,String db ){
 		this.user=user;
 		this.passw=passw;
@@ -49,6 +58,7 @@ public class DBManager {
      *
      * @param src String
      * @param dest String
+     * @param group String
      * @param mes String
      */
     public void insert(String src, String dest, String group, String mes) {
@@ -69,9 +79,7 @@ public class DBManager {
     /**
      * Metodo per prelevare i messaggi richiesti
      *
-     * @param source String
-     * @param dest String
-     * @param il vettore contenente i messaggi
+     * @return the Vector Person
      */
     public java.util.Vector <Person> readAll() {
     	String sql ="select firstName,lastName,address,passport from person"; 

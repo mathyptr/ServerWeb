@@ -19,8 +19,13 @@ public class MessagesBundle {
     private Locale currentLocale;
     private static  ResourceBundle messages;
     
+	/**
+	 * costruttore della classe MessagesBundle
+	 */
+    
     public void MessagesBundle() {
         }
+    
     /**
 	 * Metodo per il settaggio della lingua: La localizzazione del file avviene
 	 * tramite la coppia language country
