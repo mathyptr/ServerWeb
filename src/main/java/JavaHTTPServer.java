@@ -227,17 +227,9 @@ public class JavaHTTPServer implements Runnable {
 					contentType = getContentType(fileRequested);
 
 					if (!file.exists() && fileRequested.indexOf(".") == -1) {
-						String urlstr;
-						if(conf.getredirectTO().indexOf("http://") == -1) 
-							urlstr="http://"+connect.getInetAddress().getHostAddress()+":"+conf.getsrvPORT()+"/"+conf.getredirectTO();
-						else
-							urlstr=conf.getredirectTO();
-						
-						// printHeader(out,msgB.GetResourceValue("respRedirect"),
-						// msgB.GetResourceValue("serverInfo"),0);
 						out.println(msgB.GetResourceValue("respRedirect"));
-						out.println("Location: " + urlstr + fileRequested + "/");
-						logger.debug("Location: " + urlstr + fileRequested + "/");
+						out.println("Location: " + conf.getredirectTO()+ fileRequested + "/");
+						logger.debug("Location: " + conf.getredirectTO() + fileRequested + "/");
 						out.println(); // blank line between headers and content, very important !
 						out.flush();
 					} else {
