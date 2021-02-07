@@ -160,7 +160,6 @@ public class JavaHTTPServer implements Runnable {
 			// we support only GET and HEAD methods, we check
 			if (!method.equals("GET") && !method.equals("HEAD")) {
 				logger.info(msgB.GetResourceValue("srvMethodNotImplemented"));
-				;
 				// we return the not supported file to the client
 				File file = new File(WEB_ROOT, METHOD_NOT_SUPPORTED);
 				int fileLength = (int) file.length();
@@ -228,14 +227,17 @@ public class JavaHTTPServer implements Runnable {
 					contentType = getContentType(fileRequested);
 
 					if (!file.exists() && fileRequested.indexOf(".") == -1) {
-
+						String urlstr;
+						if(conf.getredirectTO().indexOf("http://") == -1) 
+							urlstr="http://"+connect.getInetAddress().getHostAddress()+":"+conf.getsrvPORT()+"/"+conf.getredirectTO();
+						else
+							urlstr=conf.getredirectTO();
+						
 						// printHeader(out,msgB.GetResourceValue("respRedirect"),
 						// msgB.GetResourceValue("serverInfo"),0);
 						out.println(msgB.GetResourceValue("respRedirect"));
-						out.println("Location: " + conf.getredirectTO() + fileRequested + "/");
-						// out.println("HTTP/1.1 301 Moved Permanently");
-						// out.println("Location: http://127.0.0.1:8080");
-						logger.debug("Location: " + conf.getredirectTO() + fileRequested + "/");
+						out.println("Location: " + urlstr + fileRequested + "/");
+						logger.debug("Location: " + urlstr + fileRequested + "/");
 						out.println(); // blank line between headers and content, very important !
 						out.flush();
 					} else {
