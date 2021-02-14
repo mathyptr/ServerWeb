@@ -1,0 +1,11 @@
+{
+"serverInfo":"Server: Java HTTP Server from Mathy : 1.0",
+"srvPORT":"3000",
+"webroot":"./www",
+"redirectTO":"newPath",
+"mysqluser":"mathy",
+"mysqlpassw":"mathy",
+"mysqlhost":"mydb",
+"mysqlport":"3306",
+"mysqldb":"tipsit"
+}
