@@ -4,5 +4,5 @@ CREATE TABLE IF NOT EXISTS tipsit.person(id int(11) NOT NULL AUTO_INCREMENT, fir
 INSERT INTO tipsit.person (id, firstName, lastName, address, passport) VALUES (1, 'Mathilde', 'Patrissi', 'Via....', NULL),(2, 'Mat', 'Pat', 'Via----', NULL);
 
 
-CREATE USER 'mathy'@'localhost' IDENTIFIED BY 'mathy';
-GRANT select ON tipsit.person TO 'mathy'@'localhost';
+CREATE USER 'mathy'@'%' IDENTIFIED BY 'mathy';
+GRANT select ON tipsit.person TO 'mathy'@'%';
